@@ -3,47 +3,607 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>My Site</title>
+  <title>MoonatNoom — Where Science Meets Spirituality</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Inter:wght@300;400&display=swap');
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --gold: #c9a84c;
+      --soft-gold: #e8d5a3;
+      --deep: #060612;
+      --mid: #0d0d2b;
+      --text: #e8e8f0;
+      --muted: #8888aa;
     }
+
+    html { scroll-behavior: smooth; }
 
     body {
-      font-family: sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      background: pink;
+      background: var(--deep);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
     }
 
-    .card {
-      background: white;
-      padding: 2rem 3rem;
-      border-radius: 12px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    /* ── STARS ── */
+    #stars-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem 4rem;
+      background: linear-gradient(to bottom, rgba(6,6,18,0.9), transparent);
+    }
+
+    .logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      letter-spacing: 0.2em;
+      color: var(--gold);
+      text-transform: uppercase;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 2.5rem;
+    }
+
+    nav a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      transition: color 0.3s;
+    }
+
+    nav a:hover { color: var(--gold); }
+
+    /* ── HERO ── */
+    #hero {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
       text-align: center;
+      padding: 2rem;
+    }
+
+    .moon {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #fffbe6, #f5d78e, #c9a84c, #7a5c1e);
+      box-shadow:
+        0 0 60px 20px rgba(201,168,76,0.25),
+        0 0 120px 60px rgba(201,168,76,0.1),
+        inset -30px -20px 40px rgba(90,50,0,0.4);
+      margin-bottom: 3rem;
+      animation: float 6s ease-in-out infinite;
+      position: relative;
+    }
+
+    .moon::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: radial-gradient(circle at 70% 30%, transparent 60%, rgba(0,0,0,0.25) 100%);
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-18px); }
+    }
+
+    .hero-eyebrow {
+      font-size: 0.7rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.2rem;
     }
 
     h1 {
-      font-size: 2rem;
-      color: #333;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3rem, 8vw, 6.5rem);
+      font-weight: 300;
+      line-height: 1.05;
+      letter-spacing: 0.02em;
+      margin-bottom: 1.5rem;
     }
 
-    p {
-      margin-top: 0.75rem;
-      color: #666;
+    h1 em {
+      font-style: italic;
+      color: var(--gold);
+    }
+
+    .hero-sub {
       font-size: 1rem;
+      color: var(--muted);
+      max-width: 480px;
+      line-height: 1.8;
+      margin-bottom: 3rem;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 0.9rem 2.5rem;
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      text-decoration: none;
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    .btn:hover {
+      background: var(--gold);
+      color: var(--deep);
+    }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--muted);
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    .scroll-hint::after {
+      content: '';
+      width: 1px;
+      height: 50px;
+      background: linear-gradient(to bottom, var(--muted), transparent);
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 1; }
+    }
+
+    /* ── DIVIDER ── */
+    .divider {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 1rem 0;
+      color: var(--gold);
+      font-size: 1.2rem;
+      letter-spacing: 0.5em;
+    }
+
+    /* ── SECTIONS ── */
+    section {
+      position: relative;
+      z-index: 1;
+      padding: 7rem 2rem;
+    }
+
+    .section-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1rem;
+    }
+
+    h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 300;
+      line-height: 1.2;
+      margin-bottom: 1.5rem;
+    }
+
+    h2 em { font-style: italic; color: var(--gold); }
+
+    .body-text {
+      color: var(--muted);
+      line-height: 1.9;
+      max-width: 560px;
+      font-size: 0.95rem;
+    }
+
+    /* ── PILLARS ── */
+    .pillars {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2px;
+      margin-top: 5rem;
+    }
+
+    .pillar {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(201,168,76,0.12);
+      padding: 3rem 2.5rem;
+      transition: background 0.3s, border-color 0.3s;
+    }
+
+    .pillar:hover {
+      background: rgba(201,168,76,0.05);
+      border-color: rgba(201,168,76,0.35);
+    }
+
+    .pillar-icon {
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .pillar h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      font-weight: 400;
+      margin-bottom: 0.75rem;
+      color: var(--soft-gold);
+    }
+
+    .pillar p {
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    /* ── QUOTE ── */
+    #quote {
+      background: linear-gradient(135deg, rgba(201,168,76,0.06), rgba(13,13,43,0.8));
+      border-top: 1px solid rgba(201,168,76,0.15);
+      border-bottom: 1px solid rgba(201,168,76,0.15);
+    }
+
+    blockquote {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.5rem, 4vw, 2.8rem);
+      font-style: italic;
+      font-weight: 300;
+      line-height: 1.5;
+      text-align: center;
+      max-width: 800px;
+      margin: 0 auto;
+      color: var(--soft-gold);
+    }
+
+    blockquote footer {
+      margin-top: 2rem;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-style: normal;
+    }
+
+    /* ── MOON PHASES ── */
+    .phases {
+      display: flex;
+      justify-content: center;
+      gap: 2.5rem;
+      flex-wrap: wrap;
+      margin-top: 4rem;
+    }
+
+    .phase {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .phase-circle {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      border: 1px solid rgba(201,168,76,0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .phase-circle::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: var(--gold);
+    }
+
+    .phase-1 .phase-circle::before { clip-path: inset(0 100% 0 0); }
+    .phase-2 .phase-circle::before { clip-path: inset(0 75% 0 0); }
+    .phase-3 .phase-circle::before { clip-path: inset(0 50% 0 0); }
+    .phase-4 .phase-circle::before { clip-path: inset(0 25% 0 0); }
+    .phase-5 .phase-circle::before { clip-path: inset(0 0% 0 0); }
+    .phase-6 .phase-circle::before { clip-path: inset(0 0 0 25%); }
+    .phase-7 .phase-circle::before { clip-path: inset(0 0 0 50%); }
+    .phase-8 .phase-circle::before { clip-path: inset(0 0 0 75%); }
+
+    .phase span {
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    /* ── JOIN ── */
+    #join {
+      text-align: center;
+    }
+
+    .email-form {
+      display: flex;
+      gap: 0;
+      max-width: 440px;
+      margin: 2.5rem auto 0;
+    }
+
+    .email-form input {
+      flex: 1;
+      padding: 0.9rem 1.2rem;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(201,168,76,0.3);
+      border-right: none;
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.85rem;
+      outline: none;
+    }
+
+    .email-form input::placeholder { color: var(--muted); }
+    .email-form input:focus { border-color: var(--gold); }
+
+    .email-form button {
+      padding: 0.9rem 1.8rem;
+      background: var(--gold);
+      border: 1px solid var(--gold);
+      color: var(--deep);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: opacity 0.3s;
+    }
+
+    .email-form button:hover { opacity: 0.85; }
+
+    /* ── FOOTER ── */
+    footer {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 3rem 2rem;
+      border-top: 1px solid rgba(201,168,76,0.1);
+      color: var(--muted);
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+    }
+
+    footer .footer-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem;
+      color: var(--gold);
+      letter-spacing: 0.25em;
+      display: block;
+      margin-bottom: 1rem;
+    }
+
+    /* ── FADE IN ── */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
     }
   </style>
 </head>
 <body>
-  <div class="card">
-    <h1>Hello, World!</h1>
-    <p>My first site — live on Vercel.</p>
+
+<canvas id="stars-canvas"></canvas>
+
+<nav>
+  <div class="logo">MoonatNoom</div>
+  <ul>
+    <li><a href="#about">About</a></li>
+    <li><a href="#pillars">Pillars</a></li>
+    <li><a href="#phases">Cycles</a></li>
+    <li><a href="#join">Join</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="moon"></div>
+  <p class="hero-eyebrow">Where Science Meets Spirituality</p>
+  <h1>The <em>Universe</em><br>Lives Within You</h1>
+  <p class="hero-sub">MoonatNoom bridges the cosmic and the quantum — exploring the profound connections between ancient wisdom and modern science.</p>
+  <a href="#about" class="btn">Begin the Journey</a>
+  <div class="scroll-hint">Scroll</div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-inner" style="display:grid; grid-template-columns:1fr 1fr; gap:5rem; align-items:center;">
+    <div class="fade-in">
+      <p class="section-label">Our Philosophy</p>
+      <h2>Two Lenses,<br>One <em>Truth</em></h2>
+      <p class="body-text">For centuries, science and spirituality were seen as opposites. At MoonatNoom, we see them as two descriptions of the same magnificent reality — one written in equations, the other in myth and stars.</p>
+      <br>
+      <p class="body-text">From quantum entanglement to sacred geometry, from neuroscience to meditation, we explore the frontier where data and wonder converge.</p>
+    </div>
+    <div class="fade-in" style="text-align:center; font-family:'Cormorant Garamond',serif; font-size:5rem; line-height:1.3; color:rgba(201,168,76,0.15); letter-spacing:0.1em;">
+      ✦<br>☽ ☉ ☾<br>✦
+    </div>
   </div>
+</section>
+
+<div class="divider">· · · ✦ · · ·</div>
+
+<!-- PILLARS -->
+<section id="pillars">
+  <div class="section-inner">
+    <div class="fade-in" style="text-align:center; margin-bottom:1rem;">
+      <p class="section-label">What We Explore</p>
+      <h2>The Four <em>Pillars</em></h2>
+    </div>
+    <div class="pillars">
+      <div class="pillar fade-in">
+        <div class="pillar-icon">⚛</div>
+        <h3>Quantum Consciousness</h3>
+        <p>The observer effect, wave-function collapse, and the role of awareness in shaping physical reality — science's most mysterious frontier.</p>
+      </div>
+      <div class="pillar fade-in">
+        <div class="pillar-icon">☽</div>
+        <h3>Lunar Rhythms</h3>
+        <p>Ancient cultures tracked the moon for farming, ritual, and healing. Modern chronobiology confirms lunar cycles influence our biology.</p>
+      </div>
+      <div class="pillar fade-in">
+        <div class="pillar-icon">✦</div>
+        <h3>Sacred Geometry</h3>
+        <p>From the Fibonacci spiral in galaxies to the structure of DNA, mathematical patterns reveal the hidden architecture of existence.</p>
+      </div>
+      <div class="pillar fade-in">
+        <div class="pillar-icon">◎</div>
+        <h3>Mind & Cosmos</h3>
+        <p>Neuroscience meets contemplative practice. How meditation rewires the brain, and why ancient traditions understood it long before MRI machines.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUOTE -->
+<section id="quote">
+  <div class="section-inner fade-in">
+    <blockquote>
+      "The day science begins to study non-physical phenomena, it will make more progress in one decade than in all the previous centuries of its existence."
+      <footer>— Nikola Tesla</footer>
+    </blockquote>
+  </div>
+</section>
+
+<!-- MOON PHASES -->
+<section id="phases">
+  <div class="section-inner" style="text-align:center;">
+    <div class="fade-in">
+      <p class="section-label">The Eternal Cycle</p>
+      <h2>Live by the <em>Moon</em></h2>
+      <p class="body-text" style="margin:0 auto;">Each phase carries its own energy — a natural rhythm that science and spirituality both honour.</p>
+    </div>
+    <div class="phases fade-in">
+      <div class="phase phase-1"><div class="phase-circle"></div><span>New</span></div>
+      <div class="phase phase-2"><div class="phase-circle"></div><span>Waxing<br>Crescent</span></div>
+      <div class="phase phase-3"><div class="phase-circle"></div><span>First<br>Quarter</span></div>
+      <div class="phase phase-4"><div class="phase-circle"></div><span>Waxing<br>Gibbous</span></div>
+      <div class="phase phase-5"><div class="phase-circle"></div><span>Full</span></div>
+      <div class="phase phase-6"><div class="phase-circle"></div><span>Waning<br>Gibbous</span></div>
+      <div class="phase phase-7"><div class="phase-circle"></div><span>Last<br>Quarter</span></div>
+      <div class="phase phase-8"><div class="phase-circle"></div><span>Waning<br>Crescent</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- JOIN -->
+<section id="join">
+  <div class="section-inner fade-in">
+    <p class="section-label">Stay Connected</p>
+    <h2>Join the <em>Constellation</em></h2>
+    <p class="body-text" style="margin:0 auto;">Receive lunar dispatches — essays, discoveries, and practices at the edge of science and spirit.</p>
+    <div class="email-form">
+      <input type="email" placeholder="your@email.com" />
+      <button>Subscribe</button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span class="footer-logo">MoonatNoom</span>
+  <p>© 2026 MoonatNoom · Where Science Meets Spirituality</p>
+</footer>
+
+<script>
+  // ── STARS ──
+  const canvas = document.getElementById('stars-canvas');
+  const ctx = canvas.getContext('2d');
+  let stars = [];
+
+  function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+
+  function createStars(n) {
+    stars = [];
+    for (let i = 0; i < n; i++) {
+      stars.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        r: Math.random() * 1.2,
+        a: Math.random(),
+        speed: 0.002 + Math.random() * 0.003
+      });
+    }
+  }
+
+  function drawStars() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    stars.forEach(s => {
+      s.a += s.speed;
+      const alpha = 0.3 + 0.7 * Math.abs(Math.sin(s.a));
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(232,213,163,${alpha})`;
+      ctx.fill();
+    });
+    requestAnimationFrame(drawStars);
+  }
+
+  resize();
+  createStars(220);
+  drawStars();
+  window.addEventListener('resize', () => { resize(); createStars(220); });
+
+  // ── FADE IN ON SCROLL ──
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) e.target.classList.add('visible');
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+
 </body>
 </html>
